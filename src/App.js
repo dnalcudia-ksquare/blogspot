@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { Switch } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import LandingPage from './views/LandingPage';
+import Login from './views/Login';
+import Dashboard from './views/Dashboard';
+import PostView from './views/PostView';
+import NotFoundScreen from './views/NotFoundScreen';
+import ProtectedRoute from './components/PrivateRoute';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Navbar />
+      <Switch>
+        <Route exact path='/'>
+          <LandingPage />
+        </Route>
+        <Route path='/login' component={Login} />
+        <ProtectedRoute path='/dashboard' exact>
+          <Dashboard />
+        </ProtectedRoute>
+        <ProtectedRoute path='/dashboard/:id' exact>
+          <PostView />
+        </ProtectedRoute>
+        <Route component={NotFoundScreen} />
+      </Switch>
+    </Router>
   );
 }
-
 export default App;
